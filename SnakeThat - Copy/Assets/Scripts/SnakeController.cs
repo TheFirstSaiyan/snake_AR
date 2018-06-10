@@ -9,7 +9,6 @@ public class SnakeController : MonoBehaviour {
 
 	private const float SPEED=0.45f;
 	public GameObject food;
-    public GameObject snake;
     private int total = 1;
     public GameObject ground;
     private const float multiplier = 5;

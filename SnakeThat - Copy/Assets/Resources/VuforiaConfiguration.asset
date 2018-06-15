@@ -42,9 +42,6 @@ MonoBehaviour:
       DistortionCoefficients: {x: 0, y: 0}
       FieldOfView: {x: 0, y: 0, z: 0, w: 0}
       ContainsMagnet: 0
-  databaseLoad:
-    dataSetsToLoad: []
-    dataSetsToActivate: []
   videoBackground:
     clippingMode: 0
     numDivisions: 2
@@ -66,5 +63,5 @@ MonoBehaviour:
   webcam:
     deviceNameSetInEditor: Webcam C170
     flipHorizontally: 0
-    turnOffWebCam: 0
+    turnOffWebCam: 1
     renderTextureLayer: 30

@@ -7,7 +7,8 @@ using UnityEngine.UI;
 public class SnakeController : MonoBehaviour {
 	//0 ,2.5,44.4
 
-	private const float SPEED=0.45f;
+	private const float SPEED=1f;
+	private float bound=10f;
 	public GameObject food;
     private int total = 1;
     public GameObject ground;
@@ -16,7 +17,7 @@ public class SnakeController : MonoBehaviour {
     private List<Vector3> positions;
 	private Vector3 spawn;
 	private string dir;
-    private float spacing =0.9f;
+    private float spacing =1f;
     private Vector3 touch;
     private float XThres = 35f;
     private float ZThres = 35f;
@@ -29,13 +30,13 @@ public class SnakeController : MonoBehaviour {
 		transform.localPosition = new Vector3 (0f,0.275f,0f);
         spawn = transform.localPosition;
 		dir = "none";
-        food.transform.localPosition = new Vector3(Random.Range(-5.07f + 0.3f, 5.07f - 0.3f), 0.275f, Random.Range(-5.07f + 0.3f, 5.07f - 0.3f));
+		food.transform.localPosition = new Vector3(Random.Range(-1*bound + 0.3f, bound - 0.3f), 0.275f, Random.Range(-1*bound + 0.3f, bound - 0.3f));
         parts = new List<GameObject>();
         positions = new List<Vector3>();
         parts.Add(transform.gameObject);
         positions.Add(transform.localPosition);
         QualitySettings.vSyncCount = 0;
-        Application.targetFrameRate=15;
+        Application.targetFrameRate=20;
         scoreText.text = "SCORE :" + score;
        // PlayerPrefs.SetInt("highscore", 0);
         highScore = PlayerPrefs.GetInt("highscore", 0);
@@ -94,29 +95,29 @@ public class SnakeController : MonoBehaviour {
 
     private void CheckBounds()
     {
-        if (positions[0].x > 5.07f)
+		if (positions[0].x > bound)
         {
 
-            transform.localPosition = new Vector3(-5.07f, transform.localPosition.y, transform.localPosition.z);
-            positions[0] = new Vector3(-5.07f, transform.localPosition.y, transform.localPosition.z);
+			transform.localPosition = new Vector3(-1*bound, transform.localPosition.y, transform.localPosition.z);
+			positions[0] = new Vector3(-1*bound, transform.localPosition.y, transform.localPosition.z);
         }
 
-        if (positions[0].x < -5.07f)
+		if (positions[0].x < -1*bound)
         {
-            transform.localPosition = new Vector3(5.07f, transform.localPosition.y, transform.localPosition.z);
-            positions[0] = new Vector3(5.07f, transform.localPosition.y, transform.localPosition.z);
+			transform.localPosition = new Vector3(bound, transform.localPosition.y, transform.localPosition.z);
+			positions[0] = new Vector3(bound, transform.localPosition.y, transform.localPosition.z);
         }
 
-        if (positions[0].z < -5.07f)
+		if (positions[0].z < -1*bound)
         {
-           transform.localPosition = new Vector3(transform.localPosition.x, transform.localPosition.y, 5.07f);
-            positions[0] = new Vector3(transform.localPosition.x, transform.localPosition.y, 5.07f);
+			transform.localPosition = new Vector3(transform.localPosition.x, transform.localPosition.y,bound);
+			positions[0] = new Vector3(transform.localPosition.x, transform.localPosition.y, bound);
         }
 
-        if (positions[0].z > 5.07f)
+		if (positions[0].z > bound)
         {
-            transform.localPosition = new Vector3(transform.localPosition.x, transform.localPosition.y, -5.07f);
-            positions[0] = new Vector3(transform.localPosition.x, transform.localPosition.y, -5.07f);
+            transform.localPosition = new Vector3(transform.localPosition.x, transform.localPosition.y, -1*bound);
+			positions[0] = new Vector3(transform.localPosition.x, transform.localPosition.y, -1*bound);
         }
         }
 
@@ -127,19 +128,19 @@ public class SnakeController : MonoBehaviour {
             GameObject c = GameObject.CreatePrimitive(PrimitiveType.Cube);
             c.transform.SetParent(ground.transform, false);
             if (dir == "LEFT")
-                c.gameObject.transform.localPosition = new Vector3(transform.localPosition.x - spacing, transform.localPosition.y, transform.localPosition.z);
+                c.gameObject.transform.localPosition = new Vector3(transform.localPosition.x , transform.localPosition.y, transform.localPosition.z);
             if (dir == "RIGHT")
-                c.gameObject.transform.localPosition = new Vector3(transform.localPosition.x + spacing, transform.localPosition.y, transform.localPosition.z);
+                c.gameObject.transform.localPosition = new Vector3(transform.localPosition.x , transform.localPosition.y, transform.localPosition.z);
             if (dir == "UP")
-                c.gameObject.transform.localPosition = new Vector3(transform.localPosition.x , transform.localPosition.y, transform.localPosition.z + spacing);
+                c.gameObject.transform.localPosition = new Vector3(transform.localPosition.x , transform.localPosition.y, transform.localPosition.z );
             if (dir == "DOWN")
-                c.gameObject.transform.localPosition = new Vector3(transform.localPosition.x , transform.localPosition.y, transform.localPosition.z - spacing);
+                c.gameObject.transform.localPosition = new Vector3(transform.localPosition.x , transform.localPosition.y, transform.localPosition.z);
             c.gameObject.transform.localRotation = transform.localRotation;
             c.gameObject.transform.localScale = transform.localScale;
             parts.Insert(1, c);
             total += 1;
             positions.Add(c.gameObject.transform.localPosition);
-            food.transform.localPosition = new Vector3(Random.Range(-5.07f + 0.3f, 5.07f - 0.3f), 0.275f, Random.Range(-5.07f + 0.3f, 5.07f - 0.3f));
+					food.transform.localPosition = new Vector3(Random.Range(-1*bound + 0.3f, bound - 0.3f), 0.275f, Random.Range(-1*bound + 0.3f, bound - 0.3f));
             score += 1;
 
             if (score >= highScore)
@@ -225,7 +226,7 @@ public class SnakeController : MonoBehaviour {
     {
         for (int i = 1; i < positions.Count; i++)
         {
-            if(Vector3.Distance(transform.localPosition,positions[i]) < 0.08f)      // check for contact with body  parts
+            if(Vector3.Distance(transform.localPosition,positions[i]) < 0.1f)      // check for contact with body  parts
             {
                 score = 0;
                 for (int j = 1; j < parts.Count; j++)
